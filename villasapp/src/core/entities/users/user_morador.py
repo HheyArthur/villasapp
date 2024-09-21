@@ -9,7 +9,7 @@ class Morador(UserInterface):
         self.__contact_num = contact_num
         
     def get_user_name(self) -> str:
-        return self._name
+        return self.__name
     
     def set_user_name(self, name: str):
-        self._name = name
+        self.__name = name
