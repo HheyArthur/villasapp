@@ -7,3 +7,6 @@ class Morador(UserInterface):
         self.apartment_num = apartment_num
         self.email = email
         self.contact_num = contact_num
+        
+    def get_user(self, user_id: int) -> str:
+        return self
