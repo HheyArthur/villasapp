@@ -1,5 +1,5 @@
 class Morador:    
-    def __init__(self, name: str, cpf: str, apartment_num: str, email:str, contact_num: str) -> None:
+    def __init__(self, name: str, cpf: str, apartment_num: str, email:str, contact_num: str):   
         self.name = name
         self.cpf = cpf
         self.apartment_num = apartment_num
