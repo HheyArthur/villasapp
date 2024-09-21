@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from src.core.entities.users.user_morador import UserMorador
+from src.core.entities.users.user_morador import Morador
 
 class UserInterface(ABC):
     @abstractmethod
-    def get_user(self, user_id: int) -> UserMorador:
+    def get_user(self, user_id: int) -> Morador:
         raise "Unnimplemented method"
