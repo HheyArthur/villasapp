@@ -1,9 +1,7 @@
-# Project Documentation
+# Para acessar a documentação da API
 
-## Overview
-This project is designed to [briefly describe the purpose of the project]. It aims to [explain the main goal or functionality of the project]. The project is implemented using [mention the primary programming language or framework used].
+* Swagger UI 
+http://127.0.0.1:8000/docs
 
-## Features
-- **Feature 1**: [Describe the first key feature of the project]
-- **Feature 2**: [Describe the second key feature of the project]
-- **Feature 3**: [Describe the third key feature of the project]
+* Redoc
+http://127.0.0.1:8000/redoc

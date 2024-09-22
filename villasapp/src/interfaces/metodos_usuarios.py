@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from villasapp.src.entidades.usuario_morador import Morador
-from villasapp.src.entidades.usuario_visitante import UsuarioVisitante
+from entidades.usuario_morador import Morador
+from entidades.usuario_visitante import UsuarioVisitante
 
 class UsuarioInterface(ABC):
     @abstractmethod

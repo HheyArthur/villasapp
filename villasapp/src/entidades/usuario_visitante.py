@@ -1,5 +1,3 @@
-# villasapp/src/entidades/usuario_visitante.py
-
 class UsuarioVisitante:
     def __init__(self, nome, cpf, telefone, veiculo, data_entrada, data_saida):
         self.__nome = nome

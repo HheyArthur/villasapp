@@ -1,5 +1,3 @@
-# villasapp/src/entidades/usuario_morador.py
-
 class Morador:
     def __init__(self, nome, email, telefone, cpf, data_nascimento, senha):
         self.__nome = nome
