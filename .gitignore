@@ -1,6 +1,7 @@
 #Virtual Environment
 .venv/
-
+.vscode/
+.pytest_cache/
 # Ignorar arquivos de configuração do sistema operacional
 .DS_Store
 Thumbs.db
