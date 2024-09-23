@@ -3,8 +3,5 @@
         "."
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "python.analysis.extraPaths": [
-        "./villasapp/src"
-    ]
+    "python.testing.pytestEnabled": true
 }

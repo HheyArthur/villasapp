@@ -1,7 +1,7 @@
 import sys
 import os
-
 import pytest
+
 from src.casos_de_uso.usuario_casos_de_uso import UsuarioCasosDeUso
 from src.repositorios.usuario_repositorio import UsuarioRepositorio
 from src.entidades.usuario_morador import Morador
