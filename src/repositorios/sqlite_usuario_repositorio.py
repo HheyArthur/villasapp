@@ -1,12 +1,11 @@
 from infraestrutura.connectors.sqlite_connector import SQLiteConnector
 from repositorios.usuario_repositorio import UsuarioRepositorio
 from entidades.usuario_morador import Morador
-from entidades.usuario_visitante import UsuarioVisitante
 
 class SQLiteUsuarioRepositorio(UsuarioRepositorio):
     def __init__(self, connector: SQLiteConnector):
         self.connector = connector
-        self.connector.create_tables()  # Chama o método para criar as tabelas
+        self.connector.create_tables()
 
     def adicionar_morador(self, morador: Morador):
         query = "INSERT INTO moradores (nome, email, telefone, cpf, data_nascimento, senha) VALUES (?, ?, ?, ?, ?, ?)"
