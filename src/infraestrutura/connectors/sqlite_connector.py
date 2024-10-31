@@ -49,4 +49,16 @@ class SQLiteConnector:
             senha TEXT NOT NULL
         );
         """
+        create_table_query_visitantes = """
+        CREATE TABLE IF NOT EXISTS visitantes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            cpf TEXT NOT NULL,
+            telefone TEXT NOT NULL,
+            veiculo TEXT NOT NULL,
+            data_entrada TEXT NOT NULL,
+            data_saida TEXT NOT NULL
+        );
+        """
         self.execute(create_table_query)
+        self.execute(create_table_query_visitantes)

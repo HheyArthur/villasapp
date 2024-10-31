@@ -1,3 +1,4 @@
+from entidades.usuario_visitante import UsuarioVisitante
 from infraestrutura.connectors.sqlite_connector import SQLiteConnector
 from repositorios.usuario_repositorio import UsuarioRepositorio
 from entidades.usuario_morador import Morador
@@ -17,3 +18,14 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
         self.connector.execute(query)
         rows = self.connector.fetchall()
         return [Morador(*row) for row in rows]
+    
+    def adicionar_visitante(self, visitante: UsuarioVisitante):
+        query = "INSERT INTO visitantes (nome, cpf, telefone, veiculo, data_entrada, data_saida) VALUES (?, ?, ?, ?, ?, ?)"
+        params = (visitante.nome, visitante.cpf, visitante.telefone, visitante.veiculo, visitante.data_entrada, visitante.data_saida)
+        self.connector.execute(query, params)
+
+    def obter_visitantes(self):
+        query = "SELECT * FROM visitantes"
+        self.connector.execute(query)
+        rows = self.connector.fetchall()
+        return [UsuarioVisitante(*row) for row in rows]

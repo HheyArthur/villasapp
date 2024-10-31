@@ -1,6 +1,5 @@
 class Morador:
-    def __init__(self, id, nome, email, telefone, cpf, data_nascimento, senha):
-        self.__id = id
+    def __init__(self, nome, email, telefone, cpf, data_nascimento, senha):
         self.__nome = nome
         self.__email = email
         self.__telefone = telefone

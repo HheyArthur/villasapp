@@ -2,10 +2,15 @@ import os
 import logging
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from casos_de_uso.reserva_caso_de_uso import ReservaCasosDeUso
 from infraestrutura.connectors.sqlite_connector import SQLiteConnector
+from repositorios.sqlite_reserva_repositorio import SQLiteReservaRepositorio
 from repositorios.sqlite_usuario_repositorio import SQLiteUsuarioRepositorio
 from servicos.usuario_servico import UsuarioServico
 from casos_de_uso.usuario_casos_de_uso import UsuarioCasosDeUso
+from servicos.reserva_servico import ReservaServico
+
+
 app = FastAPI()
 
 # Configuração do logging
@@ -32,6 +37,10 @@ repositorio = SQLiteUsuarioRepositorio(connector)
 casos_de_uso = UsuarioCasosDeUso(repositorio)
 servico = UsuarioServico(casos_de_uso)
 
+repositorio_reserva = SQLiteReservaRepositorio(connector)
+casos_de_uso_reserva = ReservaCasosDeUso(repositorio)
+servico_reserva = ReservaServico(casos_de_uso_reserva)
+
 # Moradores
 
 class MoradorModel(BaseModel):
@@ -42,7 +51,7 @@ class MoradorModel(BaseModel):
     data_nascimento: str
     senha: str
 
-@app.post("/moradores/")
+@app.post("/moradores/cadastro/")
 def criar_morador(morador: MoradorModel):
     try:
         servico.adicionar_morador(
@@ -57,7 +66,7 @@ def criar_morador(morador: MoradorModel):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/moradores/")
+@app.get("/moradores/listar/")
 def obter_moradores():
     try:
         moradores = servico.obter_moradores()
@@ -75,7 +84,7 @@ class VisitanteModel(BaseModel):
     data_entrada: str
     data_saida: str
 
-@app.post("/visitantes/")
+@app.post("/visitantes/cadastro/")
 def criar_visitante(visitante: VisitanteModel):
     try:
         servico.adicionar_visitante(
@@ -90,7 +99,7 @@ def criar_visitante(visitante: VisitanteModel):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/visitantes/")
+@app.get("/visitantes/listar/")
 def obter_visitantes():
     try:
         visitantes = servico.obter_visitantes()
@@ -106,10 +115,11 @@ class ReservaModel(BaseModel):
     data_reserva: str
     area_reserva: str
     
-@app.post("/reservar/")
+@app.post("/reservar/agendar/")
 def criar_reserva(reserva: ReservaModel):
     try:
-        servico.adicionar_reserva(
+        reserva_servico = ReservaServico(casos_de_uso_reserva)
+        reserva_servico.adicionar_reserva(
             id_reserva=reserva.id_reserva,
             id_morador=reserva.id_morador,
             data_reserva=reserva.data_reserva,
@@ -119,10 +129,11 @@ def criar_reserva(reserva: ReservaModel):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/reservas/")
+@app.get("/reservas/listar/")
 def obter_reservas():
     try:
-        reservas = servico.obter_reservas()
+        reserva_servico = ReservaServico(casos_de_uso_reserva)
+        reservas = reserva_servico.obter_reservas()
         return reservas
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
