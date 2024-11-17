@@ -12,9 +12,8 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
         self.connector.create_tables()
 
     def adicionar_morador(self, morador: Morador):
-        hashed_senha = bcrypt.hashpw(morador.senha.encode('utf-8'), bcrypt.gensalt())
         query = "INSERT INTO moradores (nome, email, telefone, cpf, data_nascimento, senha) VALUES (?, ?, ?, ?, ?, ?)"
-        params = (morador.nome, morador.email, morador.telefone, morador.cpf, morador.data_nascimento, hashed_senha)
+        params = (morador.nome, morador.email, morador.telefone, morador.cpf, morador.data_nascimento, morador.senha)
         self.connector.execute(query, params)
         morador.id = self.connector.cursor.lastrowid
     
@@ -38,6 +37,19 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
     def obter_morador_por_cpf(self, cpf: str) -> Morador:
         query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha FROM moradores WHERE cpf = ?"
         self.connector.execute(query, (cpf,))
+        row = self.connector.fetchone()
+        if row:
+            return Morador(id=row[0], nome=row[1], email=row[2], telefone=row[3], cpf=row[4], data_nascimento=row[5], senha=row[6])
+        else:
+            raise ValueError("Morador não encontrado")
+        
+    def deletar_morador_por_cpf(self, cpf: str):
+        query = "DELETE FROM moradores WHERE cpf = ?"
+        self.connector.execute(query, (cpf,))
+        
+    def obter_morador_por_id(self, id: int) -> Morador:
+        query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha FROM moradores WHERE id = ?"
+        self.connector.execute(query, (id,))
         row = self.connector.fetchone()
         if row:
             return Morador(id=row[0], nome=row[1], email=row[2], telefone=row[3], cpf=row[4], data_nascimento=row[5], senha=row[6])

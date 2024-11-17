@@ -67,13 +67,12 @@ def criar_morador(morador: MoradorModel):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/moradores/login/")
-def login(login: LoginModel):
+def login(morador: LoginModel):
     try:
-        morador = servico.buscar_morador_por_email(login.email)
-        if morador and verificar_senha(login.senha, morador.senha):
-            return {"mensagem": "Login realizado com sucesso"}
-        else:
-            raise HTTPException(status_code=401, detail="Credenciais inválidas - https://http.cat/401")
+        morador_db = servico.buscar_morador_por_email(morador.email)
+        if not morador_db or not verificar_senha(morador.senha, morador_db.senha.encode('utf-8')):
+            raise HTTPException(status_code=401, detail="Credenciais inválidas")
+        return {"mensagem": "Login realizado com sucesso"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -90,6 +89,15 @@ def obter_moradores():
             data_nascimento=morador.data_nascimento,
             senha=morador.senha
         ) for morador in moradores]
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.delete("/moradores/deletar/")
+def deletar_moradores(cpf_list: List[str]):
+    try:
+        for cpf in cpf_list:
+            servico.deletar_morador_por_cpf(cpf)
+        return {"mensagem": "Moradores deletados com sucesso"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 

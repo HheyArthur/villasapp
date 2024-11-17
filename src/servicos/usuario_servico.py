@@ -18,6 +18,12 @@ class UsuarioServico:
 
     def obter_morador_por_cpf(self, cpf):
         return self.casos_de_uso.obter_morador_por_cpf(cpf)
+    
+    def obter_morador_por_id(self, id: int) -> Morador:
+        return self.casos_de_uso.obter_morador_por_id(id)
+    
+    def deletar_morador_por_cpf(self, cpf: str):
+        self.casos_de_uso.deletar_morador_por_cpf(cpf)
 
     def adicionar_visitante(self, nome, cpf, telefone, veiculo, data_entrada, data_saida):
         visitante = UsuarioVisitante(nome, cpf, telefone, veiculo, data_entrada, data_saida)

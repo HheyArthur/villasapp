@@ -1,3 +1,4 @@
+from entidades.usuario_morador import Morador
 from repositorios.usuario_repositorio import UsuarioRepositorio
 
 
@@ -19,6 +20,12 @@ class UsuarioCasosDeUso:
 
     def obter_morador_por_cpf(self, cpf):
         return self.repositorio.obter_morador_por_cpf(cpf)
+
+    def obter_morador_por_id(self, id: int) -> Morador:
+        return self.repositorio.obter_morador_por_id(id)
+    
+    def deletar_morador_por_cpf(self, cpf: str):
+        self.repositorio.deletar_morador_por_cpf(cpf)
 
     def obter_visitantes(self):
         return self.repositorio.obter_visitantes()

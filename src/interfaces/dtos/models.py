@@ -29,6 +29,8 @@ class ReservaModel(BaseModel):
     cpf_morador: str
     data_reserva: str
     area_reserva: str
+    reservado_por: str = None
+    data_reserva: str = None
     
 class AreaReservavelModel(BaseModel):
     disponivel: bool

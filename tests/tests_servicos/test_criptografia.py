@@ -6,7 +6,7 @@ from infraestrutura.seguranca.criptografia import hash_senha, verificar_senha
 
 def test_criptografia():
     # Criptografia
-    senha = "angelo1"
+    senha = "senha-teste"
     senha_criptografada = hash_senha(senha)
     print(f"Senha criptografada: {senha_criptografada}")
 
