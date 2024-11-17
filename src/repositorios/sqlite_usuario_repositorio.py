@@ -20,9 +20,13 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
     
     def buscar_morador_por_email(self, email):
         query = "SELECT * FROM moradores WHERE email = ?"
-        result = self.connector.fetch_one(query, (email,))
+        self.connector.execute(query, (email,))
+        result = self.connector.fetchone()
         if result:
-            return MoradorModel(**result)
+            # Converta o resultado da consulta para um dicionário
+            keys = ["id", "nome", "email", "telefone", "cpf", "data_nascimento", "senha"]
+            morador_dict = dict(zip(keys, result))
+            return MoradorModel(**morador_dict)
         return None
 
     def obter_moradores(self):

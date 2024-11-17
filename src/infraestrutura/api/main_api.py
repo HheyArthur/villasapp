@@ -74,7 +74,7 @@ def login(login: LoginModel):
         if morador and verificar_senha(login.senha, morador.senha):
             return {"mensagem": "Login realizado com sucesso"}
         else:
-            raise HTTPException(status_code=400, detail="Credenciais inválidas")
+            raise HTTPException(status_code=401, detail=f"Credenciais inválidas - https://http.cat/401")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
