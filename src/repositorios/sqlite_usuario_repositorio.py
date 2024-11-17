@@ -1,3 +1,4 @@
+from typing import List, Optional
 import bcrypt
 from entidades.usuario_morador import Morador
 from entidades.usuario_visitante import UsuarioVisitante
@@ -46,6 +47,26 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
     def deletar_morador_por_cpf(self, cpf: str):
         query = "DELETE FROM moradores WHERE cpf = ?"
         self.connector.execute(query, (cpf,))
+        
+    def pesquisar_moradores(self, nome: Optional[str], email: Optional[str], cpf: Optional[str], data_nascimento: Optional[str]) -> List[Morador]:
+        query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha FROM moradores WHERE 1=1"
+        params = []
+        if nome:
+            query += " AND nome LIKE ?"
+            params.append(f"%{nome}%")
+        if email:
+            query += " AND email LIKE ?"
+            params.append(f"%{email}%")
+        if cpf:
+            query += " AND cpf = ?"
+            params.append(cpf)
+        if data_nascimento:
+            query += " AND data_nascimento = ?"
+            params.append(data_nascimento)
+        
+        self.connector.execute(query, tuple(params))
+        rows = self.connector.fetchall()
+        return [Morador(id=row[0], nome=row[1], email=row[2], telefone=row[3], cpf=row[4], data_nascimento=row[5], senha=row[6]) for row in rows]
         
     def obter_morador_por_id(self, id: int) -> Morador:
         query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha FROM moradores WHERE id = ?"

@@ -101,8 +101,22 @@ def deletar_moradores(cpf_list: List[str]):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Visitantes
+@app.get("/moradores/pesquisar/", response_model=List[MoradorModeloResposta])
+def pesquisar_moradores(nome: Optional[str] = None, email: Optional[str] = None, cpf: Optional[str] = None, data_nascimento: Optional[str] = None):
+    try:
+        moradores = servico.pesquisar_moradores(nome, email, cpf, data_nascimento)
+        return [MoradorModeloResposta(
+            nome=morador.nome,
+            email=morador.email,
+            telefone=morador.telefone,
+            cpf=morador.cpf,
+            data_nascimento=morador.data_nascimento,
+            senha=morador.senha
+        ) for morador in moradores]
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
+# Visitantes
 
 @app.post("/visitantes/cadastro/")
 def criar_visitante(visitante: VisitanteModel):
@@ -135,11 +149,7 @@ def obter_visitantes(response_model=List[VisitanteModel]):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-# Reserva de áreas comuns
-
-
-    
-    
+# Reserva de áreas comuns    
     
 @app.post("/reservar/agendar/")
 def criar_reserva(reserva: ReservaModel):

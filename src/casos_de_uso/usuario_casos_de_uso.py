@@ -1,3 +1,4 @@
+from typing import List, Optional
 from entidades.usuario_morador import Morador
 from repositorios.usuario_repositorio import UsuarioRepositorio
 
@@ -14,6 +15,9 @@ class UsuarioCasosDeUso:
 
     def buscar_morador_por_email(self, email):
         return self.repositorio.buscar_morador_por_email(email)
+
+    def pesquisar_moradores(self, nome: Optional[str], email: Optional[str], cpf: Optional[str], data_nascimento: Optional[str]) -> List[Morador]:
+        return self.repositorio.pesquisar_moradores(nome, email, cpf, data_nascimento)
 
     def obter_moradores(self):
         return self.repositorio.obter_moradores()
