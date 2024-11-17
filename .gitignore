@@ -1,4 +1,5 @@
 #Virtual Environment
+.vscode/
 .venv/
 .pytest_cache/
 .vscode/

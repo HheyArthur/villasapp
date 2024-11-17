@@ -66,7 +66,6 @@ def criar_morador(morador: MoradorModel):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Endpoint de login
 @app.post("/moradores/login/")
 def login(login: LoginModel):
     try:
@@ -74,7 +73,7 @@ def login(login: LoginModel):
         if morador and verificar_senha(login.senha, morador.senha):
             return {"mensagem": "Login realizado com sucesso"}
         else:
-            raise HTTPException(status_code=401, detail=f"Credenciais inválidas - https://http.cat/401")
+            raise HTTPException(status_code=401, detail="Credenciais inválidas - https://http.cat/401")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
