@@ -28,7 +28,16 @@ class SQLiteConnector:
         except sqlite3.Error as e:
             logging.error(f"Erro ao obter resultados: {e}")
             raise
-
+    
+    def fetchone(self):
+        try:
+            result = self.cursor.fetchone()
+            logging.info(f"Resultado obtido: {result}")
+            return result
+        except sqlite3.Error as e:
+            logging.error(f"Erro ao obter resultado: {e}")
+            raise
+        
     def close(self):
         try:
             self.connection.close()
@@ -38,7 +47,7 @@ class SQLiteConnector:
             raise
 
     def create_tables(self):
-        create_table_query = """
+        create_table_query_moradores = """
         CREATE TABLE IF NOT EXISTS moradores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
@@ -60,5 +69,26 @@ class SQLiteConnector:
             data_saida TEXT NOT NULL
         );
         """
-        self.execute(create_table_query)
+        create_table_query_reservas = """
+        CREATE TABLE IF NOT EXISTS reservas (
+            id_reserva INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_morador INTEGER NOT NULL,
+            data_reserva TEXT NOT NULL,
+            area_reserva TEXT NOT NULL,
+            FOREIGN KEY (id_morador) REFERENCES moradores(id)
+        );
+        """
+        create_table_query_areas_reservaveis = """
+        CREATE TABLE IF NOT EXISTS areas_reservaveis (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            disponivel BOOLEAN NOT NULL,
+            nome_area TEXT NOT NULL,
+            horario_funcionamento TEXT NOT NULL,
+            reservado_por TEXT,
+            data_reserva TEXT
+        );
+        """
+        self.execute(create_table_query_moradores)
         self.execute(create_table_query_visitantes)
+        self.execute(create_table_query_reservas)
+        self.execute(create_table_query_areas_reservaveis)

@@ -1,7 +1,10 @@
-from entidades.usuario_visitante import UsuarioVisitante
-from infraestrutura.connectors.sqlite_connector import SQLiteConnector
-from repositorios.usuario_repositorio import UsuarioRepositorio
+import bcrypt
 from entidades.usuario_morador import Morador
+from entidades.usuario_visitante import UsuarioVisitante
+from interfaces.dtos.models import MoradorModel
+from repositorios.usuario_repositorio import UsuarioRepositorio
+from infraestrutura.connectors.sqlite_connector import SQLiteConnector
+
 
 class SQLiteUsuarioRepositorio(UsuarioRepositorio):
     def __init__(self, connector: SQLiteConnector):
@@ -9,15 +12,33 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
         self.connector.create_tables()
 
     def adicionar_morador(self, morador: Morador):
+        hashed_senha = bcrypt.hashpw(morador.senha.encode('utf-8'), bcrypt.gensalt())
         query = "INSERT INTO moradores (nome, email, telefone, cpf, data_nascimento, senha) VALUES (?, ?, ?, ?, ?, ?)"
-        params = (morador.nome, morador.email, morador.telefone, morador.cpf, morador.data_nascimento, morador.senha)
+        params = (morador.nome, morador.email, morador.telefone, morador.cpf, morador.data_nascimento, hashed_senha)
         self.connector.execute(query, params)
+        morador.id = self.connector.cursor.lastrowid
+    
+    def buscar_morador_por_email(self, email):
+        query = "SELECT * FROM moradores WHERE email = ?"
+        result = self.connector.fetch_one(query, (email,))
+        if result:
+            return MoradorModel(**result)
+        return None
 
     def obter_moradores(self):
-        query = "SELECT * FROM moradores"
+        query = "SELECT nome, email, telefone, cpf, data_nascimento, senha FROM moradores"
         self.connector.execute(query)
         rows = self.connector.fetchall()
-        return [Morador(*row) for row in rows]
+        return [Morador(nome=row[0], email=row[1], telefone=row[2], cpf=row[3], data_nascimento=row[4], senha=row[5]) for row in rows]
+    
+    def obter_morador_por_cpf(self, cpf: str) -> Morador:
+        query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha FROM moradores WHERE cpf = ?"
+        self.connector.execute(query, (cpf,))
+        row = self.connector.fetchone()
+        if row:
+            return Morador(id=row[0], nome=row[1], email=row[2], telefone=row[3], cpf=row[4], data_nascimento=row[5], senha=row[6])
+        else:
+            raise ValueError("Morador não encontrado")
     
     def adicionar_visitante(self, visitante: UsuarioVisitante):
         query = "INSERT INTO visitantes (nome, cpf, telefone, veiculo, data_entrada, data_saida) VALUES (?, ?, ?, ?, ?, ?)"
@@ -25,7 +46,7 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
         self.connector.execute(query, params)
 
     def obter_visitantes(self):
-        query = "SELECT * FROM visitantes"
+        query = "SELECT nome, cpf, telefone, veiculo, data_entrada, data_saida FROM visitantes"
         self.connector.execute(query)
         rows = self.connector.fetchall()
         return [UsuarioVisitante(*row) for row in rows]

@@ -7,7 +7,6 @@ class UsuarioVisitante:
         self.__data_entrada = data_entrada
         self.__data_saida = data_saida
 
-    # Métodos getters e setters
     @property
     def nome(self):
         return self.__nome

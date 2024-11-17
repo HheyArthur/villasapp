@@ -1,5 +1,6 @@
 class Morador:
-    def __init__(self, nome, email, telefone, cpf, data_nascimento, senha):
+    def __init__(self, nome, email, telefone, cpf, data_nascimento, senha, id=None):
+        self.__id = id
         self.__nome = nome
         self.__email = email
         self.__telefone = telefone
@@ -7,6 +8,14 @@ class Morador:
         self.__data_nascimento = data_nascimento
         self.__senha = senha
 
+    @property
+    def id(self):
+        return self.__id
+
+    @id.setter
+    def id(self, value):
+        self.__id = value
+        
     @property
     def nome(self):
         return self.__nome

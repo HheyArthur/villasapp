@@ -10,12 +10,18 @@ class UsuarioServico:
         morador = Morador(nome, email, telefone, cpf, data_nascimento, senha)
         self.casos_de_uso.adicionar_morador(morador)
 
-    def adicionar_visitante(self, nome, cpf, telefone, veiculo, data_entrada, data_saida):
-        visitante = UsuarioVisitante(nome, cpf, telefone, veiculo, data_entrada, data_saida)
-        self.casos_de_uso.adicionar_visitante(visitante)
+    def buscar_morador_por_email(self, email):
+        return self.casos_de_uso.buscar_morador_por_email(email)
 
     def obter_moradores(self):
         return self.casos_de_uso.obter_moradores()
+
+    def obter_morador_por_cpf(self, cpf):
+        return self.casos_de_uso.obter_morador_por_cpf(cpf)
+
+    def adicionar_visitante(self, nome, cpf, telefone, veiculo, data_entrada, data_saida):
+        visitante = UsuarioVisitante(nome, cpf, telefone, veiculo, data_entrada, data_saida)
+        self.casos_de_uso.adicionar_visitante(visitante)
 
     def obter_visitantes(self):
         return self.casos_de_uso.obter_visitantes()
