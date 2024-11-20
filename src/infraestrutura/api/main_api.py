@@ -3,6 +3,7 @@ import logging
 from pydantic import BaseModel
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from servicos.reserva_servico import ReservaServico
 from servicos.usuario_servico import UsuarioServico
 from casos_de_uso.reserva_caso_de_uso import ReservaCasosDeUso
@@ -16,6 +17,18 @@ from repositorios.area_reservavel_repositorio import AreaReservavelRepositorio
 from interfaces.dtos.models import AreaReservavelModel, AtualizarDisponibilidadeModel, LoginModel, MoradorModel, MoradorModeloResposta, ReservaModel, VisitanteModel
 
 app = FastAPI()
+
+origins = [
+    "*",  # Permitir todos os hosts
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Configuração do logging
 logging.basicConfig(
