@@ -201,7 +201,7 @@ def obter_reservas():
 
 
 
-@app.delete("/reservar/cancelar/{id_reserva}")
+@app.delete("/reserva/cancelar/{id_reserva}")
 def cancelar_reserva(id_reserva: int):
     try:
         reserva = servico_reserva.obter_reserva_por_id(id_reserva)
