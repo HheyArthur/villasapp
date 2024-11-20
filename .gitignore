@@ -1,9 +1,12 @@
 #Virtual Environment
+.vscode/
 .venv/
-
+.pytest_cache/
+.vscode/
 # Ignorar arquivos de configuração do sistema operacional
 .DS_Store
 Thumbs.db
+src/data/villasapp_base.db
 
 # Ignorar arquivos de log
 *.log
