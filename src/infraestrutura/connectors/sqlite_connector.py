@@ -85,7 +85,8 @@ class SQLiteConnector:
             nome_area TEXT NOT NULL,
             horario_funcionamento TEXT NOT NULL,
             reservado_por TEXT,
-            data_reserva TEXT
+            data_reserva TEXT,
+            path_imagem TEXT
         );
         """
         self.execute(create_table_query_moradores)

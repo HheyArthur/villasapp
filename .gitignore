@@ -13,6 +13,7 @@ src/data/villasapp_base.db
 
 # Ignorar arquivos de cache do Python
 __pycache__/
+__pycache__/*.py
 *.py[cod]
 
 # Ignorar diretórios de cache do pytest

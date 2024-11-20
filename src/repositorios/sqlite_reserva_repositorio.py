@@ -14,7 +14,7 @@ class SQLiteReservaRepositorio(ReservaRepositorio):
         reserva.id_reserva = self.connector.cursor.lastrowid
 
         # Atualiza o campo reservado_por e a disponibilidade da área reservável
-        update_query = "UPDATE areas_reservaveis SET disponivel = ?, reservado_por = ?, data_reserva = ? WHERE nome_area = ?"
+        update_query = "UPDATE areas_reservaveis SET disponivel = ?, reservado_por = ?, data_reserva = ? WHERE LOWER(nome_area) LIKE LOWER(?)"
         update_params = (False, reserva.nome_morador, reserva.data_reserva, reserva.local_reserva)
         self.connector.execute(update_query, update_params)
         
