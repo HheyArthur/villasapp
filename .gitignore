@@ -12,6 +12,7 @@ src/data/villasapp_base.db
 *.log
 
 # Ignorar arquivos de cache do Python
+__pycache__/*
 __pycache__/
 *.py[cod]
 
