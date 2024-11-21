@@ -13,8 +13,8 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
         self.connector.create_tables()
 
     def adicionar_morador(self, morador: Morador):
-        query = "INSERT INTO moradores (nome, email, telefone, cpf, data_nascimento, senha) VALUES (?, ?, ?, ?, ?, ?)"
-        params = (morador.nome, morador.email, morador.telefone, morador.cpf, morador.data_nascimento, morador.senha)
+        query = "INSERT INTO moradores (nome, email, telefone, cpf, data_nascimento, senha, numero_apartamento) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        params = (morador.nome, morador.email, morador.telefone, morador.cpf, morador.data_nascimento, morador.senha, morador.numero_apartamento)
         self.connector.execute(query, params)
         morador.id = self.connector.cursor.lastrowid
     
@@ -30,17 +30,17 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
         return None
 
     def obter_moradores(self):
-        query = "SELECT nome, email, telefone, cpf, data_nascimento, senha FROM moradores"
+        query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha, numero_apartamento FROM moradores"
         self.connector.execute(query)
         rows = self.connector.fetchall()
-        return [Morador(nome=row[0], email=row[1], telefone=row[2], cpf=row[3], data_nascimento=row[4], senha=row[5]) for row in rows]
+        return [Morador(id=row[0], nome=row[1], email=row[2], telefone=row[3], cpf=row[4], data_nascimento=row[5], senha=row[6], numero_apartamento=row[7]) for row in rows]
     
     def obter_morador_por_cpf(self, cpf: str) -> Morador:
-        query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha FROM moradores WHERE cpf = ?"
+        query = "SELECT id, nome, email, telefone, cpf, data_nascimento, senha, numero_apartamento FROM moradores WHERE cpf = ?"
         self.connector.execute(query, (cpf,))
         row = self.connector.fetchone()
         if row:
-            return Morador(id=row[0], nome=row[1], email=row[2], telefone=row[3], cpf=row[4], data_nascimento=row[5], senha=row[6])
+            return Morador(id=row[0], nome=row[1], email=row[2], telefone=row[3], cpf=row[4], data_nascimento=row[5], senha=row[6], numero_apartamento=row[7])
         else:
             raise ValueError("Morador não encontrado")
         

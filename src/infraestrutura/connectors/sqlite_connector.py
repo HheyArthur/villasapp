@@ -55,7 +55,8 @@ class SQLiteConnector:
             telefone TEXT NOT NULL,
             cpf TEXT NOT NULL,
             data_nascimento TEXT NOT NULL,
-            senha TEXT NOT NULL
+            senha TEXT NOT NULL,
+            numero_apartamento TEXT NOT NULL
         );
         """
         create_table_query_visitantes = """
