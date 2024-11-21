@@ -45,3 +45,7 @@ class AtualizarDisponibilidadeModel(BaseModel):
 class LoginModel(BaseModel):
     email: str
     senha: str
+    
+class RecadoModel(BaseModel):
+    conteudo: str
+    cpf_autor: str

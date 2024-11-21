@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from casos_de_uso.recado_casos_de_uso import RecadoCasosDeUso
+from repositorios.recado_repositorio import RecadoRepositorio
 from servicos.reserva_servico import ReservaServico
 from servicos.usuario_servico import UsuarioServico
 from casos_de_uso.reserva_caso_de_uso import ReservaCasosDeUso
@@ -14,7 +16,7 @@ from repositorios.sqlite_usuario_repositorio import SQLiteUsuarioRepositorio
 from infraestrutura.seguranca.criptografia import hash_senha, verificar_senha
 from casos_de_uso.area_reservavel_caso_de_uso import AreaReservavelCasosDeUso
 from repositorios.area_reservavel_repositorio import AreaReservavelRepositorio
-from interfaces.dtos.models import AreaReservavelModel, AtualizarDisponibilidadeModel, LoginModel, MoradorModel, MoradorModeloResposta, ReservaModel, VisitanteModel
+from interfaces.dtos.models import AreaReservavelModel, AtualizarDisponibilidadeModel, LoginModel, MoradorModel, MoradorModeloResposta, RecadoModel, ReservaModel, VisitanteModel
 
 app = FastAPI()
 
@@ -61,6 +63,9 @@ servico_reserva = ReservaServico(casos_de_uso_reserva)
 
 repositorio_area_reservavel = AreaReservavelRepositorio(connector)
 casos_de_uso_area_reservavel = AreaReservavelCasosDeUso(repositorio_area_reservavel)
+
+repositorio_recado = RecadoRepositorio(connector)
+casos_de_uso_recado = RecadoCasosDeUso(repositorio_recado)
 
 
 @app.get("/moradores/listar/", response_model=List[MoradorModeloResposta])
@@ -158,6 +163,24 @@ def obter_reservas():
         return reservas
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+@app.get("/recados/listar/")
+def obter_recados():
+    try:
+        recados = casos_de_uso_recado.obter_recados()
+        return [RecadoModel(conteudo=recado.conteudo, cpf_autor=recado.cpf_autor) for recado in recados]
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@app.post("/recados/cadastro/")
+def criar_recado(recado: RecadoModel):
+    try:
+        if len(recado.conteudo) > 300:
+            raise HTTPException(status_code=400, detail="O recado não pode ter mais de 300 caracteres")
+        casos_de_uso_recado.adicionar_recado(recado.conteudo, recado.cpf_autor)
+        return {"mensagem": "Recado criado com sucesso"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/visitantes/cadastro/")
 def criar_visitante(visitante: VisitanteModel):
@@ -242,6 +265,14 @@ def atualizar_disponibilidade_area_reservavel(nome_area: str, disponibilidade: A
     try:
         casos_de_uso_area_reservavel.atualizar_disponibilidade_area_reservavel(nome_area, disponibilidade.disponivel)
         return {"mensagem": "Disponibilidade da área reservável atualizada com sucesso"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@app.delete("/recados/deletar/{id}")
+def deletar_recado(id: int):
+    try:
+        casos_de_uso_recado.deletar_recado(id)
+        return {"mensagem": "Recado deletado com sucesso"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
