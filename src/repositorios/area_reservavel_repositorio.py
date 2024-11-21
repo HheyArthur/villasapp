@@ -17,7 +17,7 @@ class AreaReservavelRepositorio:
         return [AreaReservavel(id=row[0], disponivel=row[1], nome_area=row[2], horario_funcionamento=row[3], reservado_por=row[4], data_reserva=row[5]) for row in rows]
 
     def obter_area_reservavel_por_nome(self, nome: str) -> AreaReservavel:
-        query = "SELECT id, disponivel, nome_area, horario_funcionamento, reservado_por, data_reserva FROM areas_reservaveis WHERE nome_area = ?"
+        query = "SELECT id, disponivel, nome_area, horario_funcionamento, reservado_por, data_reserva FROM areas_reservaveis WHERE id = ?"
         self.connector.execute(query, (nome,))
         row = self.connector.fetchone()
         if row:

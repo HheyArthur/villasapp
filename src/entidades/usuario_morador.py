@@ -1,5 +1,5 @@
 class Morador:
-    def __init__(self, nome, email, telefone, cpf, data_nascimento, senha, id=None):
+    def __init__(self, nome, email, telefone, cpf, data_nascimento, senha, numero_apartamento=None, id=None):
         self.__id = id
         self.__nome = nome
         self.__email = email
@@ -7,6 +7,7 @@ class Morador:
         self.__cpf = cpf
         self.__data_nascimento = data_nascimento
         self.__senha = senha
+        self.__numero_apartamento = numero_apartamento
 
     @property
     def id(self):
@@ -63,3 +64,11 @@ class Morador:
     @senha.setter
     def senha(self, value):
         self.__senha = value
+    
+    @property
+    def numero_apartamento(self):
+        return self.__numero_apartamento
+
+    @numero_apartamento.setter
+    def numero_apartamento(self, value):
+        self.__numero_apartamento = value

@@ -7,6 +7,7 @@ class MoradorModel(BaseModel):
     telefone: str
     cpf: str
     data_nascimento: str
+    numero_apartamento: str
     senha: str
 
 class MoradorModeloResposta(BaseModel):
@@ -15,6 +16,7 @@ class MoradorModeloResposta(BaseModel):
     telefone: str
     cpf: str
     data_nascimento: str
+    numero_apartamento: str
     senha: str
 
 class VisitanteModel(BaseModel):
@@ -49,3 +51,11 @@ class LoginModel(BaseModel):
 class RecadoModel(BaseModel):
     conteudo: str
     cpf_autor: str
+    
+class RecadoRespostaModel(BaseModel):
+    conteudo: str
+    nome_autor: str
+    
+class AtualizarHorariosVisitanteModel(BaseModel):
+    data_entrada: str
+    data_saida: str
