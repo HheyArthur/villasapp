@@ -7,7 +7,7 @@ class MoradorModel(BaseModel):
     telefone: str
     cpf: str
     data_nascimento: str
-    numero_apartamento: str
+    numero_apartamento: Optional[str] = None
     senha: str
 
 class MoradorModeloResposta(BaseModel):
@@ -16,7 +16,7 @@ class MoradorModeloResposta(BaseModel):
     telefone: str
     cpf: str
     data_nascimento: str
-    numero_apartamento: str
+    numero_apartamento: Optional[str] = None
     senha: str
 
 class VisitanteModel(BaseModel):
