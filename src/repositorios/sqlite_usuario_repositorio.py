@@ -13,6 +13,11 @@ class SQLiteUsuarioRepositorio(UsuarioRepositorio):
         self.connector.create_tables()
 
     def adicionar_morador(self, morador: Morador):
+        query_verificar_cpf = "SELECT COUNT(*) FROM moradores WHERE cpf = ?"
+        self.connector.execute(query_verificar_cpf, (morador.cpf,))
+        if self.connector.fetchone()[0] > 0:
+            raise ValueError("Já existe um morador cadastrado com este CPF")
+        
         query = "INSERT INTO moradores (nome, email, telefone, cpf, data_nascimento, senha, numero_apartamento) VALUES (?, ?, ?, ?, ?, ?, ?)"
         params = (morador.nome, morador.email, morador.telefone, morador.cpf, morador.data_nascimento, morador.senha, morador.numero_apartamento)
         self.connector.execute(query, params)
